@@ -1,99 +1,111 @@
-// Enemies our player must avoid
-var Enemy = function(sprite, x, y,speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+/* Game referenced https://www.youtube.com/watch?v=7PHhRrjgTDA */
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+// Initial player score
+var score = 0;
+document.getElementById('playerScore').innerHTML = score;
+
+// variables'setting  Game's Enemies
+var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
+    this.speed = speed;
     this.x = x;
     this.y = y;
-    this.speed = speed
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/* Update the enemy's position, required method for game
+ * Parameter: dt, a time delta between ticks
+ */
 Enemy.prototype.update = function(dt) {
-  this.x = this.x + this.speed * dt;
+    if (this.x < 505) {
+        this.x = (this.speed * dt) + this.x;
+        this.speed = Math.floor(Math.random()*222);
+    } else {
+        this.x = -50;
+    }
 
-  if (this.x > 510) {
-    this.x = -20;
-    this.speed = 50 + Math.floor(Math.random() * 100);
-  }
-
-  if (this.x < player.x + 80 &&
-    player.x + 80 > player.x &&
-    this.y < player.y + 80 &&
-    player.y + 80 > this.y) {
-      player.x = 202;
-      player.y = 405;
-    };
-
+    // If the enemy and the player collide
+    if (this.x < player.x + 80 &&
+       this.x + 80 > player.x &&
+       this.y < player.y + 60 &&
+       this.y + 60 > player.y) {
+        score = 0;
+        document.getElementById('playerScore').innerHTML = score;
+        player.reset();
+    }
 };
 
-// Draw the enemy on the screen, required method for game
+/* Draw enemy on the screen
+ * required method for game
+ */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+/* player class
+ * update(), render() and
+ * a handleInput() method.
+ */
 
-
-// Place the player object in a variable called player
-var Player = function(sprite, x, y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+var Player = function() {
     this.sprite = 'images/char-pink-girl.png';
-    this.x = x;
-    this.y = y;
-}
+    this.x = 202;
+    this.y = 405;
+};
 
+// Every time the player position is updated
+Player.prototype.update = function() {
 
-Player.prototype.update = function(dt) {
-
-}
-
-
-Player.prototype.handleInput = function(keyPress){
-  if (keyPress == 'left' && this.x > 0){
-      this.x -= 102;
-    }
-  if (keyPress == 'right' && this.x < 405){
-        this.x += 102;
-    }
-  if (keyPress == 'up' && this.y > 0){
-        this.y -= 80;
-    }
-  if (keyPress == 'up' && this.y < 405){
-        this.x -= 80;
-    }
-  if (this.y < 0){
-    setTimeOut(() =>{
-        player.x = 200;
-        player.y = 400;
-    }, 500);
-  }
-}
+    // when player reaches the water
+  //  if (player.y < 20) {
+    //    score++;
+      //  document.getElementById('playerScore').innerHTML = score;
+      //  this.reset();
+    //}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+Player.prototype.handleInput = function(direction) {
+    if (direction == 'left' && this.x > 0) {
+        this.x -= 102;
+    }
+    if (direction == 'right' && this.x < 405) {
+        this.x += 102;
+    }
+    if (direction == 'up' && this.y > 0) {
+        this.y -= 83;
+    }
+    if (direction == 'down' && this.y < 405) {
+        this.y += 83;
+    }
+    if (this.y< 0 ){
+      setTimeout(function(){
+      player.x = 202;
+      player.y = 405;
+    }, 600);
+    score++;
+    document.getElementById('playerScore').innerHTML = score;
+  }
+}
+
+//  player's reset to the starting point
+//Player.prototype.reset = function() {
+  //  this.x = 202;
+  //  this.y = 405;
+//};
+
 // Now instantiate your objects.
+var enemy1 = new Enemy(-50, 60, 10) ;
+var enemy2 = new Enemy(-150, 140, 40);
+var enemy3 = new Enemy(-220, 230, 90);
+
+
 // Place all enemy objects in an array called allEnemies
-const allEnemies = [];
-const enemyLocation= [63, 147, 230];
-
-enemyLocation.forEach(function(locationY){
-  enemy = new Enemy (0, locationY, 100);
-  allEnemies.push(enemy);
-});
-
-var player = new Player (100, 300);
+var allEnemies = [enemy1, enemy2, enemy3];
+// Place the player object in a variable called player
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
