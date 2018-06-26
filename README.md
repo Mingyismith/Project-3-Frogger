@@ -1,4 +1,4 @@
-##Udacity Nanodegree Project 3 - frontend-arcade-game
+Udacity Nanodegree Project 3 - frontend-arcade-game
 ===============================
 [Play Game!](https://rawgit.com/Mingyismith/Project-3-Frogger/master/index.html)
 
