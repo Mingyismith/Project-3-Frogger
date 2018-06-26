@@ -1,4 +1,4 @@
-/* Game referenced https://www.youtube.com/watch?v=7PHhRrjgTDA */
+/* Game setup referenced https://www.youtube.com/watch?v=7PHhRrjgTDA */
 
 // Initial player score
 var score = 0;
@@ -30,7 +30,7 @@ Enemy.prototype.update = function(dt) {
        this.y + 60 > player.y) {
         score = 0;
         document.getElementById('playerScore').innerHTML = score;
-        player.x = 202;
+        player.x =202;
         player.y = 405;
     }
 };
