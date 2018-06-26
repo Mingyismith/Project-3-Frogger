@@ -30,7 +30,8 @@ Enemy.prototype.update = function(dt) {
        this.y + 60 > player.y) {
         score = 0;
         document.getElementById('playerScore').innerHTML = score;
-        player.reset();
+        player.x = 202;
+        player.y = 405;
     }
 };
 
